@@ -1,25 +1,72 @@
-import logo from './logo.svg';
-import './App.css';
+import React from "react"
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+class Clock extends React.Component {
+  constructor(props) {
+    super(props)
+    this.state = { date: new Date() }
+  }
+
+  componentDidMount() {
+    this.timeId = setInterval(() => this.tick()
+      , 1000);
+    console.log('render');
+  }
+
+  componentDidUpdate() {
+    console.log('updated');
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.timerID);
+    console.log('unMounted');
+  }
+
+
+
+  tick() {
+    this.setState(() => ({ date: new Date() }))
+  }
+
+
+  render() {
+    return (
+      <h2>
+        {this.state.date.toLocaleTimeString()}
+      </h2>
+    )
+  }
+}
+
+
+
+class App extends React.Component {
+  constructor(props) {
+    super(props)
+    this.state = { visible: true }
+    this.handleClick = this.handleClick.bind(this)
+  }
+
+
+  handleClick() {
+    this.setState(() => ({ visible: false }))
+  }
+
+
+  render() {
+    return (
+      <div className="App">
+        <h1>React lifeCycle
+        </h1>
+        {this.state.visible &&
+          <Clock />
+        }
+
+        <button onClick={this.handleClick}>
+          click
+        </button>
+      </div>
+    );
+  }
 }
 
 export default App;
